@@ -1,0 +1,30 @@
+-- Custom music ID (replace this with your own music)
+local customMusicId = "rbxassetid://YOUR_MUSIC_ID_HERE"
+
+-- Function to detect and replace LMS music
+spawn(function()
+    while true do
+        -- Look through all sounds
+        for _, sound in pairs(game:GetDescendants()) do
+            if sound:IsA("Sound") and sound.IsPlaying then
+                -- Optional: Replace this with actual known LMS music ID if you want to target specifically
+                if string.find(sound.SoundId:lower(), "lastman") or string.find(sound.Name:lower(), "lastman") then
+                    -- Stop original LMS music
+                    sound:Stop()
+
+                    -- Check if we already have our custom sound
+                    if not game:GetService("SoundService"):FindFirstChild("CustomLMSMusic") then
+                        local newSound = Instance.new("Sound", game:GetService("SoundService"))
+                        newSound.Name = "CustomLMSMusic"
+                        newSound.SoundId = customMusicId
+                        newSound.Volume = 1
+                        newSound.Looped = true
+                        wait(0.1)
+                        newSound:Play()
+                    end
+                end
+            end
+        end
+        wait(1)
+    end
+end)
